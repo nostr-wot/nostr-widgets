@@ -27,7 +27,7 @@ Markdown / WordPress / Ghost / Substack / RSS / GitHub READMEs — all covered w
 
 ### Live example
 
-Embedding the project's own founder ([`npub1gxdh…wzfk`](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)):
+Embedding a profile ([`npub1gxdh…wzfk`](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)):
 
 ```html
 <a href="https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk">
@@ -38,13 +38,13 @@ Embedding the project's own founder ([`npub1gxdh…wzfk`](https://nostr-wot.com/
 
 Renders as:
 
-[![Leon on Nostr](https://nostr-wot.com/widgets/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
+[![Profile on Nostr](https://nostr-wot.com/widgets/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
 
 Same npub on the follow button and feed strip:
 
-[![Follow Leon on Nostr](https://nostr-wot.com/widgets/follow/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
+[![Follow on Nostr](https://nostr-wot.com/widgets/follow/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
 
-[![Recent notes from Leon](https://nostr-wot.com/widgets/feed/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg?n=3)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
+[![Recent notes](https://nostr-wot.com/widgets/feed/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg?n=3)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
 
 ## How it works (one paragraph)
 
