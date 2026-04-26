@@ -2,47 +2,32 @@
 
 Server-rendered SVG widgets for Nostr profiles, follow buttons, and recent feeds. Embed anywhere with a plain `<a><img></a>` snippet — no JavaScript, no iframes, full backlink credit.
 
-Hosted at **[nostr-wot.com/widgets](https://nostr-wot.com/widgets)**. Self-hosting your own endpoint is fully supported (see below).
+**Production endpoint:** `https://nostr-wot.com/widgets/` — hosted on the same VPS that serves nostr-wot.com, behind nginx, kept alive with pm2. Open-source so anyone can self-host or contribute new widgets. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the runtime, [docs/DEPLOY.md](docs/DEPLOY.md) for the runbook, [docs/EMBED.md](docs/EMBED.md) for integrator examples.
 
-## Embed
-
-### Profile badge — 320 × 96
+## Embed (TL;DR)
 
 ```html
+<!-- Profile badge — 320 × 96 -->
 <a href="https://nostr-wot.com/p/{npub}">
-  <img src="https://nostr-wot.com/widgets/profile/{npub}.svg"
-       alt="Leon on Nostr" width="320" height="96">
+  <img src="https://nostr-wot.com/widgets/profile/{npub}.svg" width="320" height="96" alt="…">
+</a>
+
+<!-- Follow button — 220 × 40 -->
+<a href="https://nostr-wot.com/p/{npub}">
+  <img src="https://nostr-wot.com/widgets/follow/{npub}.svg" width="220" height="40" alt="Follow …">
+</a>
+
+<!-- Feed strip — 480 × dynamic, n is 1..5, default 3 -->
+<a href="https://nostr-wot.com/p/{npub}">
+  <img src="https://nostr-wot.com/widgets/feed/{npub}.svg?n=3" width="480" alt="…">
 </a>
 ```
 
-### Follow button — 220 × 40
+Markdown / WordPress / Ghost / Substack / RSS / GitHub READMEs — all covered with examples in [**docs/EMBED.md**](docs/EMBED.md).
 
-```html
-<a href="https://nostr-wot.com/p/{npub}">
-  <img src="https://nostr-wot.com/widgets/follow/{npub}.svg"
-       alt="Follow Leon on Nostr" width="220" height="40">
-</a>
-```
+## How it works (one paragraph)
 
-### Feed strip — 480 × (56 + 80·n + 24)
-
-```html
-<a href="https://nostr-wot.com/p/{npub}">
-  <img src="https://nostr-wot.com/widgets/feed/{npub}.svg?n=3"
-       alt="Recent notes from Leon" width="480">
-</a>
-```
-
-`n` is 1–5; default 3.
-
-## How it works
-
-1. Browser requests `nostr-wot.com/widgets/profile/{npub}.svg`.
-2. nginx on the VPS reverse-proxies `/widgets/*` to a Hono app on `127.0.0.1:3001`.
-3. The Hono app fetches kind 0/3/1 events from a curated relay set, resolves the avatar to a `data:` URI, and calls `@nostr-widgets/renderer` to produce a self-contained SVG.
-4. The SVG ships with `Cache-Control: public, max-age, s-maxage, stale-while-revalidate` and an `ETag`. Integrators with their own CDN get free 304s.
-
-Everything is in-memory; no Redis, no external cache. One pm2 process, one LRU per cache bucket.
+Browser requests `nostr-wot.com/widgets/profile/{npub}.svg`. nginx reverse-proxies `/widgets/*` to a Hono app on `127.0.0.1:3001`. The app fetches kind 0/3/1 events from a curated relay set, resolves the avatar to a `data:` URI (sharp resize 96², 200 KB cap, identicon fallback), and calls `@nostr-widgets/renderer` to produce a self-contained SVG. Response ships with `Cache-Control: public, max-age, s-maxage, stale-while-revalidate` and an `ETag` for free 304s. Everything is in-memory; one pm2 process, one LRU per cache bucket. Deeper detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Repo layout
 
@@ -87,27 +72,22 @@ const svg = renderProfileBadge({
 
 Or copy `apps/server` and deploy it under your own domain. PRs welcome.
 
-## Deployment (production / nostr-wot.com)
+## Deployment
 
-The widgets app runs on the same VPS as `nostr-wot.com`, behind nginx, managed by pm2.
+Full runbook in [**docs/DEPLOY.md**](docs/DEPLOY.md): first-time setup, continuous deploys, nginx wiring, troubleshooting, rollback.
 
-- nginx snippet: [`deploy/nginx.conf.example`](deploy/nginx.conf.example)
-- pm2 config: [`ecosystem.config.cjs`](ecosystem.config.cjs)
-- deploy script: [`scripts/deploy.sh`](scripts/deploy.sh)
-
-First-time setup on the VPS:
+TL;DR for an existing box:
 
 ```bash
-git clone git@github.com:nostr-wot/nostr-widgets.git /var/www/nostr-widgets
-cd /var/www/nostr-widgets
-pnpm install
-pnpm -r build
-pm2 start ecosystem.config.cjs
-pm2 save
-pm2 startup   # follow the printed instruction
+ssh root@<server>
+cd /var/www/nostr-widgets && ./scripts/deploy.sh
 ```
 
-Subsequent deploys: `./scripts/deploy.sh`.
+Reference assets in this repo:
+
+- nginx snippet → [`deploy/nginx.conf.example`](deploy/nginx.conf.example)
+- pm2 config → [`ecosystem.config.cjs`](ecosystem.config.cjs)
+- deploy script → [`scripts/deploy.sh`](scripts/deploy.sh)
 
 ## Configuration
 
