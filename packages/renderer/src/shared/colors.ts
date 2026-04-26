@@ -1,0 +1,15 @@
+export const colors = {
+  bgFrom: '#1e1b4b',
+  bgVia: '#312e81',
+  bgTo: '#4c1d95',
+  border: '#a78bfa',
+  borderSoft: 'rgba(167,139,250,0.35)',
+  text: '#ffffff',
+  textMuted: 'rgba(255,255,255,0.72)',
+  textDim: 'rgba(255,255,255,0.5)',
+  accent: '#facc15',
+  accentSoft: 'rgba(250,204,21,0.18)',
+  trustGreen: '#4ade80',
+  pillBg: 'rgba(167,139,250,0.12)',
+  brandPurple: '#7c3aed',
+} as const;

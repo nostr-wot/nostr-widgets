@@ -1,0 +1,31 @@
+{
+  "name": "nostr-widgets",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Server-rendered SVG widgets for Nostr profiles, follows, and feeds. Embed anywhere with <a><img></a>.",
+  "homepage": "https://nostr-wot.com/widgets",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nostr-wot/nostr-widgets.git"
+  },
+  "engines": {
+    "node": ">=20.10"
+  },
+  "packageManager": "pnpm@9.12.3",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --parallel -r dev",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
