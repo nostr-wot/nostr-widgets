@@ -9,7 +9,7 @@ module.exports = {
       max_memory_restart: '300M',
       env: {
         NODE_ENV: 'production',
-        PORT: '3001',
+        PORT: '3004',
       },
       out_file: '/var/log/pm2/nostr-widgets.out.log',
       error_file: '/var/log/pm2/nostr-widgets.err.log',

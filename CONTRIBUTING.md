@@ -11,7 +11,7 @@ pnpm test
 pnpm --filter @nostr-widgets/server dev
 ```
 
-Visit `http://localhost:3001/widgets/profile/<npub>.svg` to verify.
+Visit `http://localhost:3004/widgets/profile/<npub>.svg` to verify.
 
 ## Adding a new widget kind
 

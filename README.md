@@ -25,9 +25,30 @@ Server-rendered SVG widgets for Nostr profiles, follow buttons, and recent feeds
 
 Markdown / WordPress / Ghost / Substack / RSS / GitHub READMEs — all covered with examples in [**docs/EMBED.md**](docs/EMBED.md).
 
+### Live example
+
+Embedding the project's own founder ([`npub1gxdh…wzfk`](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)):
+
+```html
+<a href="https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk">
+  <img src="https://nostr-wot.com/widgets/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg"
+       width="320" height="96" alt="Leon on Nostr" />
+</a>
+```
+
+Renders as:
+
+[![Leon on Nostr](https://nostr-wot.com/widgets/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
+
+Same npub on the follow button and feed strip:
+
+[![Follow Leon on Nostr](https://nostr-wot.com/widgets/follow/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
+
+[![Recent notes from Leon](https://nostr-wot.com/widgets/feed/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk.svg?n=3)](https://nostr-wot.com/profile/npub1gxdhmu9swqduwhr6zptjy4ya693zp3ql28nemy4hd97kuufyrqdqwe5zfk)
+
 ## How it works (one paragraph)
 
-Browser requests `nostr-wot.com/widgets/profile/{npub}.svg`. nginx reverse-proxies `/widgets/*` to a Hono app on `127.0.0.1:3001`. The app fetches kind 0/3/1 events from a curated relay set, resolves the avatar to a `data:` URI (sharp resize 96², 200 KB cap, identicon fallback), and calls `@nostr-widgets/renderer` to produce a self-contained SVG. Response ships with `Cache-Control: public, max-age, s-maxage, stale-while-revalidate` and an `ETag` for free 304s. Everything is in-memory; one pm2 process, one LRU per cache bucket. Deeper detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+Browser requests `nostr-wot.com/widgets/profile/{npub}.svg`. nginx reverse-proxies `/widgets/*` to a Hono app on `127.0.0.1:3004`. The app fetches kind 0/3/1 events from a curated relay set, resolves the avatar to a `data:` URI (sharp resize 96², 200 KB cap, identicon fallback), and calls `@nostr-widgets/renderer` to produce a self-contained SVG. Response ships with `Cache-Control: public, max-age, s-maxage, stale-while-revalidate` and an `ETag` for free 304s. Everything is in-memory; one pm2 process, one LRU per cache bucket. Deeper detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Repo layout
 
@@ -45,7 +66,7 @@ The renderer is publishable to npm so any Nostr project can host its own widgets
 pnpm install
 pnpm -r build
 pnpm --filter @nostr-widgets/server dev
-# open http://localhost:3001/widgets/profile/<npub>.svg
+# open http://localhost:3004/widgets/profile/<npub>.svg
 ```
 
 Run tests:
@@ -95,7 +116,7 @@ All env vars optional; sensible defaults baked in.
 
 | Var | Default | Meaning |
 |---|---|---|
-| `PORT` | `3001` | port to listen on |
+| `PORT` | `3004` | port to listen on |
 | `NOSTR_RELAYS` | five public relays | comma-separated `wss://` URLs |
 | `RELAY_TIMEOUT_MS` | `2000` | per-query timeout |
 | `AVATAR_MAX_BYTES` | `200000` | reject avatars larger than this |

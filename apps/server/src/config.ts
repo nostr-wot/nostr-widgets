@@ -16,7 +16,7 @@ function parseRelays(env: string | undefined): string[] {
 }
 
 export const config = {
-  port: Number(process.env.PORT ?? 3001),
+  port: Number(process.env.PORT ?? 3004),
   relays: parseRelays(process.env.NOSTR_RELAYS),
   relayTimeoutMs: Number(process.env.RELAY_TIMEOUT_MS ?? 2000),
   avatarMaxBytes: Number(process.env.AVATAR_MAX_BYTES ?? 200_000),

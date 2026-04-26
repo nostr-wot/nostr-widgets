@@ -9,7 +9,7 @@
    nostr-wot.com   (nginx, ports 80/443, TLS termination)
         │
         ├─ /                 → 127.0.0.1:3000   (Next.js, pm2 app: nostr-wot)
-        └─ /widgets/*        → 127.0.0.1:3001   (Hono,    pm2 app: nostr-widgets)
+        └─ /widgets/*        → 127.0.0.1:3004   (Hono,    pm2 app: nostr-widgets)
                                     │
                                     ├─► LRU cache (in-memory, per bucket)
                                     │
@@ -40,7 +40,7 @@ The whole service is one Node process, fork-mode, single instance. There is no R
 ## Data flow per request
 
 1. Browser hits `nostr-wot.com/widgets/profile/<npub>.svg`.
-2. nginx reverse-proxies to `127.0.0.1:3001/widgets/profile/<npub>.svg`.
+2. nginx reverse-proxies to `127.0.0.1:3004/widgets/profile/<npub>.svg`.
 3. Hono parses `<npub>`, decodes to hex via `nip19.decode`. Bad input → 400.
 4. **Cache lookups in parallel:**
    - kind 0 metadata → `LRU.profile`, 5-min TTL

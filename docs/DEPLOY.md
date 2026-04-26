@@ -2,7 +2,7 @@
 
 ## Where it runs
 
-The canonical production endpoint is **`https://nostr-wot.com/widgets/`**. Hosted on the same VPS that serves nostr-wot.com (Hetzner / Contabo / your equivalent — single box, no edge, no autoscaler). nginx terminates TLS and reverse-proxies `/widgets/*` to a Node process bound to `127.0.0.1:3001`. pm2 keeps the process alive across reboots and reloads.
+The canonical production endpoint is **`https://nostr-wot.com/widgets/`**. Hosted on the same VPS that serves nostr-wot.com (Hetzner / Contabo / your equivalent — single box, no edge, no autoscaler). nginx terminates TLS and reverse-proxies `/widgets/*` to a Node process bound to `127.0.0.1:3004`. pm2 keeps the process alive across reboots and reloads.
 
 This document covers:
 
@@ -53,7 +53,7 @@ pm2 startup
 # (run the printed `sudo env PATH=... pm2 startup ...` command if it shows one)
 
 # 6. Confirm it's listening
-curl -s http://127.0.0.1:3001/health
+curl -s http://127.0.0.1:3004/health
 # → {"status":"ok","relays":5}
 ```
 
@@ -105,7 +105,7 @@ Add this block inside the existing `server { ... }` for `nostr-wot.com`, **above
 
 ```nginx
 location /widgets/ {
-    proxy_pass         http://127.0.0.1:3001;
+    proxy_pass         http://127.0.0.1:3004;
     proxy_http_version 1.1;
     proxy_set_header   Host              $host;
     proxy_set_header   X-Real-IP         $remote_addr;
@@ -124,7 +124,7 @@ location /widgets/ {
 
 Notes:
 
-- The trailing slash on `location /widgets/` and `proxy_pass http://127.0.0.1:3001` keeps the path intact: `/widgets/profile/npub1...svg` → upstream sees the same path. Drop either trailing slash and the path will reshape unexpectedly.
+- The trailing slash on `location /widgets/` and `proxy_pass http://127.0.0.1:3004` keeps the path intact: `/widgets/profile/npub1...svg` → upstream sees the same path. Drop either trailing slash and the path will reshape unexpectedly.
 - `proxy_buffering off` is intentional. The SVG payload is small and we want headers to flow back fast.
 - `Cache-Control` and `ETag` from the app pass through nginx unchanged. We do **not** add nginx-level caching — the app's headers are tighter and the integrator's CDN does the heavy lifting.
 - If you're using Cloudflare in front, set the orange-cloud cache level to "Standard" (or higher) and the SVGs will live in Cloudflare for `s-maxage=3600` automatically.
@@ -135,7 +135,7 @@ All optional; defaults below are baked in.
 
 | Var | Default | Meaning |
 |---|---|---|
-| `PORT` | `3001` | port to listen on |
+| `PORT` | `3004` | port to listen on |
 | `NOSTR_RELAYS` | five public relays | comma-separated `wss://` URLs |
 | `RELAY_TIMEOUT_MS` | `2000` | per-query timeout |
 | `AVATAR_MAX_BYTES` | `200000` | reject avatars larger than this |
@@ -150,8 +150,8 @@ To set: edit `ecosystem.config.cjs` (the `env` block) then `pm2 reload nostr-wid
 
 ```bash
 # Local to the box
-curl -s http://127.0.0.1:3001/health
-curl -sI http://127.0.0.1:3001/widgets/profile/npub1leon.svg | head
+curl -s http://127.0.0.1:3004/health
+curl -sI http://127.0.0.1:3004/widgets/profile/npub1leon.svg | head
 
 # From outside
 curl -sI https://nostr-wot.com/widgets/profile/npub1leon.svg | head
@@ -166,7 +166,7 @@ curl -sI https://nostr-wot.com/widgets/profile/npub1leon.svg | head
 
 **`pm2: command not found`** — install globally: `npm i -g pm2`. Re-source your shell after.
 
-**`502 Bad Gateway` from nginx on `/widgets/*`** — the Hono process isn't listening on `127.0.0.1:3001`. Check `pm2 status` and `pm2 logs nostr-widgets --lines 50`.
+**`502 Bad Gateway` from nginx on `/widgets/*`** — the Hono process isn't listening on `127.0.0.1:3004`. Check `pm2 status` and `pm2 logs nostr-widgets --lines 50`.
 
 **SVG returns but no avatar shows** — likely the avatar URL was unreachable, oversize, or wrong content-type. Identicon fallback should take over; if it doesn't, it's a renderer bug — open an issue.
 
@@ -244,11 +244,11 @@ pnpm -r test
 pnpm -r typecheck
 ```
 
-The dev server defaults to port 3001 on localhost. Hit `http://localhost:3001/health` to confirm.
+The dev server defaults to port 3004 on localhost. Hit `http://localhost:3004/health` to confirm.
 
 To test a widget locally, you'll need a real npub:
 
 ```bash
-curl http://localhost:3001/widgets/profile/npub1xtscya34g58tk0z605fvr788k263gsu6cy9x0mhnm87echrgufzsevkk5s.svg \
+curl http://localhost:3004/widgets/profile/npub1xtscya34g58tk0z605fvr788k263gsu6cy9x0mhnm87echrgufzsevkk5s.svg \
   > /tmp/widget.svg && open /tmp/widget.svg
 ```
