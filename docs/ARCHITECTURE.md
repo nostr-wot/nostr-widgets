@@ -47,7 +47,7 @@ The whole service is one Node process, fork-mode, single instance. There is no R
    - kind 3 follow list → `LRU.follow`, 5-min TTL (count = `tags.filter(p)`)
    - WoT score → `LRU.wot`, 5-min TTL
    - On miss: query relays via `SimplePool` (4 s timeout)
-5. Avatar URL from metadata → `LRU.avatar` (30-min TTL). On miss: `fetch()` (4 s timeout, 200 KB cap, allowed types only) → `sharp` resize 96² → base64 → store as `data:image/jpeg;base64,...`. Failure → identicon fallback.
+5. Avatar URL from metadata → `LRU.avatar` (30-min TTL). On miss: `fetch()` (4 s timeout, 1 MB cap, allowed types only) → `sharp` resize 96² → base64 → store as `data:image/jpeg;base64,...`. Failure → identicon fallback.
 6. Hand resolved data to `@nostr-widgets/renderer` → SVG string.
 7. Set headers (`Content-Type`, `Cache-Control`, `ETag`), respond.
 8. If `If-None-Match` matched the freshly computed ETag → 304 Not Modified.

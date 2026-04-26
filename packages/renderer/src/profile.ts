@@ -3,6 +3,7 @@ import { ellipsize, escapeXml } from './shared/escape.js';
 import { fontFamilySans, fontFamilyMono } from './shared/fonts.js';
 import { identiconDataUri } from './shared/identicon.js';
 import { clampScore, formatCount } from './shared/layout.js';
+import { logoMarkup } from './shared/logo.js';
 import { backgroundRect, gradientDefs } from './shared/svg.js';
 import type { ProfileData } from './types.js';
 
@@ -52,6 +53,6 @@ ${backgroundRect(id, W, H)}
 <text x="96" y="32" font-family="${fontFamilySans}" font-size="15" fill="${colors.text}" font-weight="700">${name}</text>
 ${metaLine}
 ${stats}
-<text x="${W - 12}" y="${H - 10}" font-family="${fontFamilySans}" font-size="9" fill="${colors.textDim}" text-anchor="end">via nostr-wot.com</text>
+${logoMarkup(W - 26, H - 22, 16)}
 </svg>`;
 }

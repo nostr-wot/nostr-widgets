@@ -19,7 +19,7 @@ export const config = {
   port: Number(process.env.PORT ?? 3004),
   relays: parseRelays(process.env.NOSTR_RELAYS),
   relayTimeoutMs: Number(process.env.RELAY_TIMEOUT_MS ?? 4000),
-  avatarMaxBytes: Number(process.env.AVATAR_MAX_BYTES ?? 200_000),
+  avatarMaxBytes: Number(process.env.AVATAR_MAX_BYTES ?? 1_000_000),
   avatarMaxDimension: Number(process.env.AVATAR_MAX_DIM ?? 2048),
   rateLimitPerMin: Number(process.env.RATE_LIMIT_PER_MIN ?? 60),
   wotScoreUrl: process.env.WOT_SCORE_URL ?? '',

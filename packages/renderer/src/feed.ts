@@ -2,6 +2,7 @@ import { colors } from './shared/colors.js';
 import { ellipsize, escapeXml } from './shared/escape.js';
 import { fontFamilySans } from './shared/fonts.js';
 import { identiconDataUri } from './shared/identicon.js';
+import { logoMarkup } from './shared/logo.js';
 import { backgroundRect, gradientDefs } from './shared/svg.js';
 import type { FeedData, FeedLimit, FeedNote } from './types.js';
 
@@ -52,7 +53,7 @@ ${backgroundRect(id, W, totalH)}
   <image href="${avatar}" x="16" y="12" width="32" height="32" preserveAspectRatio="xMidYMid slice"/>
   <circle cx="32" cy="28" r="16" fill="none" stroke="${colors.borderSoft}" stroke-width="1"/>
   <text x="56" y="32" font-family="${fontFamilySans}" font-size="14" fill="${colors.text}" font-weight="700">${name}</text>
-  <text x="${W - 16}" y="32" font-family="${fontFamilySans}" font-size="10" fill="${colors.textDim}" text-anchor="end">via nostr-wot.com</text>
+  ${logoMarkup(W - 36, 12, 24)}
 </g>
 ${rows}
 </svg>`;

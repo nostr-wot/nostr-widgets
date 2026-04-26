@@ -14,7 +14,8 @@ describe('renderProfileBadge', () => {
     expect(svg).toContain('height="96"');
     expect(svg).toContain('Leon');
     expect(svg).toContain('leon@hodl.ar');
-    expect(svg).toContain('via nostr-wot.com');
+    // Brand mark: white logo (no indigo background)
+    expect(svg).toContain('cx="24" cy="24" r="5" fill="white"');
     expect(svg).toContain('WoT');
     expect(svg).toContain('87');
     expect(svg).toContain('1.2k');

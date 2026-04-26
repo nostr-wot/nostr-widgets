@@ -138,7 +138,7 @@ All optional; defaults below are baked in.
 | `PORT` | `3004` | port to listen on |
 | `NOSTR_RELAYS` | five public relays | comma-separated `wss://` URLs |
 | `RELAY_TIMEOUT_MS` | `4000` | per-query timeout |
-| `AVATAR_MAX_BYTES` | `200000` | reject avatars larger than this |
+| `AVATAR_MAX_BYTES` | `1000000` | reject avatars larger than this |
 | `AVATAR_MAX_DIM` | `2048` | reject avatars larger than this in either dimension |
 | `RATE_LIMIT_PER_MIN` | `60` | per-IP per-route token bucket |
 | `WOT_SCORE_URL` | (empty) | optional internal endpoint, expects `{ score: 0..100 }` |

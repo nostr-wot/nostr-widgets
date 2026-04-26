@@ -48,7 +48,7 @@ Same npub on the follow button and feed strip:
 
 ## How it works (one paragraph)
 
-Browser requests `nostr-wot.com/widgets/profile/{npub}.svg`. nginx reverse-proxies `/widgets/*` to a Hono app on `127.0.0.1:3004`. The app fetches kind 0/3/1 events from a curated relay set, resolves the avatar to a `data:` URI (sharp resize 96², 200 KB cap, identicon fallback), and calls `@nostr-widgets/renderer` to produce a self-contained SVG. Response ships with `Cache-Control: public, max-age, s-maxage, stale-while-revalidate` and an `ETag` for free 304s. Everything is in-memory; one pm2 process, one LRU per cache bucket. Deeper detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+Browser requests `nostr-wot.com/widgets/profile/{npub}.svg`. nginx reverse-proxies `/widgets/*` to a Hono app on `127.0.0.1:3004`. The app fetches kind 0/3/1 events from a curated relay set, resolves the avatar to a `data:` URI (sharp resize 96², 1 MB cap, identicon fallback), and calls `@nostr-widgets/renderer` to produce a self-contained SVG. Response ships with `Cache-Control: public, max-age, s-maxage, stale-while-revalidate` and an `ETag` for free 304s. Everything is in-memory; one pm2 process, one LRU per cache bucket. Deeper detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Repo layout
 
@@ -119,7 +119,7 @@ All env vars optional; sensible defaults baked in.
 | `PORT` | `3004` | port to listen on |
 | `NOSTR_RELAYS` | five public relays | comma-separated `wss://` URLs |
 | `RELAY_TIMEOUT_MS` | `4000` | per-query timeout |
-| `AVATAR_MAX_BYTES` | `200000` | reject avatars larger than this |
+| `AVATAR_MAX_BYTES` | `1000000` | reject avatars larger than this |
 | `RATE_LIMIT_PER_MIN` | `60` | per-IP per-route token bucket |
 | `WOT_SCORE_URL` | (empty) | optional internal endpoint, expects `{ score: 0..100 }` |
 | `PUBLIC_SITE_URL` | `https://nostr-wot.com` | used in attribution links |
