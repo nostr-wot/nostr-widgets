@@ -115,7 +115,7 @@ location /widgets/ {
     proxy_pass_request_headers on;
     proxy_buffering            off;
 
-    # Relay-bound app, 2 s internal ceiling — leave headroom
+    # Relay-bound app, 4 s internal ceiling — leave headroom
     proxy_connect_timeout 3s;
     proxy_read_timeout    5s;
     proxy_send_timeout    5s;
@@ -137,7 +137,7 @@ All optional; defaults below are baked in.
 |---|---|---|
 | `PORT` | `3004` | port to listen on |
 | `NOSTR_RELAYS` | five public relays | comma-separated `wss://` URLs |
-| `RELAY_TIMEOUT_MS` | `2000` | per-query timeout |
+| `RELAY_TIMEOUT_MS` | `4000` | per-query timeout |
 | `AVATAR_MAX_BYTES` | `200000` | reject avatars larger than this |
 | `AVATAR_MAX_DIM` | `2048` | reject avatars larger than this in either dimension |
 | `RATE_LIMIT_PER_MIN` | `60` | per-IP per-route token bucket |
@@ -170,7 +170,7 @@ curl -sI https://nostr-wot.com/widgets/profile/npub1leon.svg | head
 
 **SVG returns but no avatar shows** — likely the avatar URL was unreachable, oversize, or wrong content-type. Identicon fallback should take over; if it doesn't, it's a renderer bug — open an issue.
 
-**Empty SVG / 502 burst** — relays might be slow. The 2 s timeout caps damage, but if every relay is wedged you get sparse SVGs. Add a known-stable relay to `NOSTR_RELAYS`.
+**Empty SVG / 502 burst** — relays might be slow. The 4 s timeout caps damage, but if every relay is wedged you get sparse SVGs. Add a known-stable relay to `NOSTR_RELAYS`.
 
 **Rate-limit hits in legitimate traffic** — bump `RATE_LIMIT_PER_MIN` in env. Token bucket is per-IP per-route. Reset on `pm2 reload`.
 
