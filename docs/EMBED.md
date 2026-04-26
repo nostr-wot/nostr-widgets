@@ -11,7 +11,7 @@ The default production endpoint is **`https://nostr-wot.com/widgets/`** — ever
 Avatar, display name, NIP-05 (if any), Web-of-Trust score and follower count.
 
 ```html
-<a href="https://nostr-wot.com/p/{npub}" rel="noopener">
+<a href="https://nostr-wot.com/profile/{npub}" rel="noopener">
   <img src="https://nostr-wot.com/widgets/profile/{npub}.svg"
        alt="{name} on Nostr"
        width="320" height="96" />
@@ -23,7 +23,7 @@ Avatar, display name, NIP-05 (if any), Web-of-Trust score and follower count.
 A pill that says *Follow on Nostr*, optionally with a follower count.
 
 ```html
-<a href="https://nostr-wot.com/p/{npub}" rel="noopener">
+<a href="https://nostr-wot.com/profile/{npub}" rel="noopener">
   <img src="https://nostr-wot.com/widgets/follow/{npub}.svg"
        alt="Follow {name} on Nostr"
        width="220" height="40" />
@@ -35,7 +35,7 @@ A pill that says *Follow on Nostr*, optionally with a follower count.
 Recent N notes from the npub. `n` is 1–5; default is 3.
 
 ```html
-<a href="https://nostr-wot.com/p/{npub}" rel="noopener">
+<a href="https://nostr-wot.com/profile/{npub}" rel="noopener">
   <img src="https://nostr-wot.com/widgets/feed/{npub}.svg?n=3"
        alt="Recent notes from {name}"
        width="480" />
@@ -67,7 +67,7 @@ The widgets are designed for *web pages*. Email is best-effort.
 For Markdown surfaces (READMEs, Hashnode, Dev.to, Hashnews):
 
 ```markdown
-[![Leon on Nostr](https://nostr-wot.com/widgets/profile/npub1leon.svg)](https://nostr-wot.com/p/npub1leon)
+[![Leon on Nostr](https://nostr-wot.com/widgets/profile/npub1leon.svg)](https://nostr-wot.com/profile/npub1leon)
 ```
 
 The outer link is the backlink. Don't drop it.
@@ -113,7 +113,7 @@ The image is fetched at *render time* by your visitor's browser. That means:
 ```tsx
 export function NostrBadge({ npub }: { npub: string }) {
   return (
-    <a href={`https://nostr-wot.com/p/${npub}`} rel="noopener">
+    <a href={`https://nostr-wot.com/profile/${npub}`} rel="noopener">
       <img
         src={`https://nostr-wot.com/widgets/profile/${npub}.svg`}
         alt={`Profile of ${npub.slice(0, 12)} on Nostr`}

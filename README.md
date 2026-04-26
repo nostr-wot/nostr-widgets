@@ -8,17 +8,17 @@ Server-rendered SVG widgets for Nostr profiles, follow buttons, and recent feeds
 
 ```html
 <!-- Profile badge — 320 × 96 -->
-<a href="https://nostr-wot.com/p/{npub}">
+<a href="https://nostr-wot.com/profile/{npub}">
   <img src="https://nostr-wot.com/widgets/profile/{npub}.svg" width="320" height="96" alt="…">
 </a>
 
 <!-- Follow button — 220 × 40 -->
-<a href="https://nostr-wot.com/p/{npub}">
+<a href="https://nostr-wot.com/profile/{npub}">
   <img src="https://nostr-wot.com/widgets/follow/{npub}.svg" width="220" height="40" alt="Follow …">
 </a>
 
 <!-- Feed strip — 480 × dynamic, n is 1..5, default 3 -->
-<a href="https://nostr-wot.com/p/{npub}">
+<a href="https://nostr-wot.com/profile/{npub}">
   <img src="https://nostr-wot.com/widgets/feed/{npub}.svg?n=3" width="480" alt="…">
 </a>
 ```

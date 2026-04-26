@@ -67,7 +67,7 @@ Every relay/avatar call is wrapped in `Promise.race` with a timeout. The endpoin
 
 ## Why nginx reverse proxy, not a separate subdomain
 
-The whole point is **backlink credit**. A search-engine crawler that follows `<a href="https://nostr-wot.com/p/leon"><img src="https://nostr-wot.com/widgets/profile/leon.svg"></a>` sees one origin: `nostr-wot.com`. The inbound `<a>` link counts towards `nostr-wot.com`'s authority graph.
+The whole point is **backlink credit**. A search-engine crawler that follows `<a href="https://nostr-wot.com/profile/leon"><img src="https://nostr-wot.com/widgets/profile/leon.svg"></a>` sees one origin: `nostr-wot.com`. The inbound `<a>` link counts towards `nostr-wot.com`'s authority graph.
 
 If we served widgets from `widgets.nostr-wot.com`, the surrounding `<a>` would still credit `nostr-wot.com`, but mixing third-party origins on a host page introduces extra DNS, CSP and CORS surface for integrators. nginx-side rewriting is invisible to the host page — the integrator pastes one snippet, and crawlers, browsers and DevTools all see one origin.
 
