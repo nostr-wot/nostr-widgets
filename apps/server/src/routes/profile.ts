@@ -7,10 +7,10 @@ import { getWotScore } from '../wot.js';
 
 export const profileRoute = new Hono();
 
-profileRoute.get('/:npub{.+\\.svg}', svgCacheHeaders('profile'), async (c) => {
+profileRoute.get('/:npub', svgCacheHeaders('profile'), async (c) => {
   const raw = c.req.param('npub');
-  if (!raw || !raw.endsWith('.svg')) return c.text('not found', 404);
-  const npub = raw.slice(0, -4);
+  if (!raw) return c.text('not found', 404);
+  const npub = raw.endsWith('.svg') ? raw.slice(0, -4) : raw;
 
   let hex: string;
   try {

@@ -6,17 +6,17 @@ import { fetchMetadata, fetchRecentNotes, InvalidNpubError, npubToHex } from '..
 
 export const feedRoute = new Hono();
 
-function parseLimit(raw: string | undefined): FeedLimit {
+function parseLimit(raw: string | undefined | null): FeedLimit {
   const n = Number(raw);
   if (n === 1 || n === 2 || n === 3 || n === 4 || n === 5) return n;
   return 3;
 }
 
-feedRoute.get('/:npub{.+\\.svg}', svgCacheHeaders('feed'), async (c) => {
+feedRoute.get('/:npub', svgCacheHeaders('feed'), async (c) => {
   const raw = c.req.param('npub');
-  if (!raw || !raw.endsWith('.svg')) return c.text('not found', 404);
-  const npub = raw.slice(0, -4);
-  const limit = parseLimit(c.req.query('n'));
+  if (!raw) return c.text('not found', 404);
+  const npub = raw.endsWith('.svg') ? raw.slice(0, -4) : raw;
+  const limit = parseLimit(c.req.query('n') ?? c.req.query('limit'));
 
   let hex: string;
   try {
