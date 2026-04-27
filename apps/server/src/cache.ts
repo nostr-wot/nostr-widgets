@@ -19,6 +19,12 @@ const caches = new Map<Bucket, LRUCache<string, Wrapped>>([
   ['wot', new LRUCache<string, Wrapped>({ max: 5000, ttl: TTLS.wot })],
 ]);
 
+function isNegative(value: unknown): boolean {
+  if (value === null || value === undefined) return true;
+  if (Array.isArray(value) && value.length === 0) return true;
+  return false;
+}
+
 export async function memoize<T>(
   bucket: Bucket,
   key: string,
@@ -29,7 +35,9 @@ export async function memoize<T>(
   const cached = cache.get(key);
   if (cached) return { value: cached.v as T, hit: true };
   const fresh = await fn();
-  cache.set(key, { v: fresh });
+  if (!isNegative(fresh)) {
+    cache.set(key, { v: fresh });
+  }
   return { value: fresh, hit: false };
 }
 

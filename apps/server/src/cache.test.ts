@@ -15,7 +15,7 @@ describe('memoize', () => {
     expect(b.value.count).toBe(1);
   });
 
-  it('caches null values without re-computing', async () => {
+  it('does not cache null/empty results so cold-start failures retry', async () => {
     let calls = 0;
     const compute = async (): Promise<null> => {
       calls += 1;
@@ -24,7 +24,8 @@ describe('memoize', () => {
     const a = await memoize('follow', 'null-key', compute);
     const b = await memoize('follow', 'null-key', compute);
     expect(a.value).toBeNull();
-    expect(b.hit).toBe(true);
-    expect(calls).toBe(1);
+    expect(a.hit).toBe(false);
+    expect(b.hit).toBe(false);
+    expect(calls).toBe(2);
   });
 });
