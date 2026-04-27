@@ -36,9 +36,10 @@ export function renderProfileBadge(data: ProfileData): string {
     statsX += 72;
   }
   if (followers !== null) {
-    const labelW = 56;
-    const countW = Math.max(20, followers.length * 8 + 6);
-    const badgeW = 12 + labelW + countW + 12;
+    const labelW = 64;
+    const gap = 12;
+    const countW = Math.max(18, followers.length * 8 + 4);
+    const badgeW = 12 + labelW + gap + countW + 12;
     stats += `
       <g transform="translate(${statsX}, 62)">
         <rect width="${badgeW}" height="22" rx="11" fill="${colors.pillBg}" stroke="${colors.borderSoft}" stroke-width="1"/>
