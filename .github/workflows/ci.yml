@@ -24,11 +24,13 @@ jobs:
       - name: install
         run: pnpm install --frozen-lockfile
 
+      # Renderer must build first so its dist/ exists for the server's typecheck.
+      # `pnpm -r build` respects the workspace dependency graph, so renderer goes first.
+      - name: build
+        run: pnpm -r build
+
       - name: typecheck
         run: pnpm -r typecheck
 
       - name: test
         run: pnpm -r test
-
-      - name: build
-        run: pnpm -r build
