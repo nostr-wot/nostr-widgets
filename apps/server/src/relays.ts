@@ -85,3 +85,15 @@ export function shutdownRelays(): void {
   pool.close(config.relays);
   pool = null;
 }
+
+export async function warmRelayPool(): Promise<void> {
+  try {
+    await Promise.race<unknown>([
+      getPool().querySync(config.relays, { kinds: [0], limit: 1 }),
+      new Promise((resolve) => setTimeout(resolve, config.relayTimeoutMs + 1000)),
+    ]);
+    process.stdout.write(`relay pool warmed (${config.relays.length} relays)\n`);
+  } catch (err) {
+    process.stderr.write(`relay pool warmup failed: ${(err as Error).message}\n`);
+  }
+}

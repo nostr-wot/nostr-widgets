@@ -25,6 +25,8 @@ function isNegative(value: unknown): boolean {
   return false;
 }
 
+const inflight = new Map<string, Promise<unknown>>();
+
 export async function memoize<T>(
   bucket: Bucket,
   key: string,
@@ -32,13 +34,28 @@ export async function memoize<T>(
 ): Promise<{ value: T; hit: boolean }> {
   const cache = caches.get(bucket);
   if (!cache) throw new Error(`unknown cache bucket: ${bucket}`);
+
   const cached = cache.get(key);
   if (cached) return { value: cached.v as T, hit: true };
-  const fresh = await fn();
-  if (!isNegative(fresh)) {
-    cache.set(key, { v: fresh });
+
+  const flightKey = `${bucket}:${key}`;
+  const existing = inflight.get(flightKey) as Promise<T> | undefined;
+  if (existing) {
+    return { value: await existing, hit: true };
   }
-  return { value: fresh, hit: false };
+
+  const promise = (async () => {
+    const fresh = await fn();
+    if (!isNegative(fresh)) cache.set(key, { v: fresh });
+    return fresh;
+  })();
+  inflight.set(flightKey, promise);
+  try {
+    const value = await promise;
+    return { value, hit: false };
+  } finally {
+    inflight.delete(flightKey);
+  }
 }
 
 export const cacheTtls = TTLS;

@@ -6,7 +6,7 @@ import { requestLog } from './middleware/request-log.js';
 import { feedRoute } from './routes/feed.js';
 import { followRoute } from './routes/follow.js';
 import { profileRoute } from './routes/profile.js';
-import { shutdownRelays } from './relays.js';
+import { shutdownRelays, warmRelayPool } from './relays.js';
 
 const app = new Hono();
 
@@ -27,6 +27,7 @@ app.onError((err, c) => {
 
 const server = serve({ fetch: app.fetch, port: config.port }, (info) => {
   process.stdout.write(`nostr-widgets listening on :${info.port}\n`);
+  void warmRelayPool();
 });
 
 function shutdown(signal: string): void {
