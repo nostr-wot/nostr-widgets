@@ -36,11 +36,14 @@ export function renderProfileBadge(data: ProfileData): string {
     statsX += 72;
   }
   if (followers !== null) {
+    const labelW = 56;
+    const countW = Math.max(20, followers.length * 8 + 6);
+    const badgeW = 12 + labelW + countW + 12;
     stats += `
       <g transform="translate(${statsX}, 62)">
-        <rect width="${followers.length * 7 + 56}" height="22" rx="11" fill="${colors.pillBg}" stroke="${colors.borderSoft}" stroke-width="1"/>
-        <text x="11" y="15" font-family="${fontFamilySans}" font-size="11" fill="${colors.textMuted}">followers</text>
-        <text x="${followers.length * 7 + 24}" y="15" font-family="${fontFamilyMono}" font-size="11" fill="${colors.text}" font-weight="700" text-anchor="end">${followers}</text>
+        <rect width="${badgeW}" height="22" rx="11" fill="${colors.pillBg}" stroke="${colors.borderSoft}" stroke-width="1"/>
+        <text x="12" y="15" font-family="${fontFamilySans}" font-size="11" fill="${colors.textMuted}">followers</text>
+        <text x="${badgeW - 12}" y="15" font-family="${fontFamilyMono}" font-size="11" fill="${colors.text}" font-weight="700" text-anchor="end">${followers}</text>
       </g>
     `;
   }
