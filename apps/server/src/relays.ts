@@ -25,11 +25,49 @@ export function npubToHex(npub: string): string {
   }
 }
 
+/**
+ * Subscribe to all configured relays for `filter`. Resolve as soon as the
+ * first event arrives from any relay, or when `relayTimeoutMs` expires
+ * (whichever comes first). Subsequent events from slower relays are
+ * dropped — the caller has already proceeded.
+ *
+ * For `limit > 1` we wait for either `limit` events or the timeout,
+ * whichever first. This trades a little freshness (we may miss an event
+ * that arrives 10ms after our first) for sub-second response times when
+ * the cache is cold.
+ */
+function fastQuery(filter: Filter, limit = 1): Promise<Event[]> {
+  return new Promise((resolve) => {
+    const collected: Event[] = [];
+    const seen = new Set<string>();
+    let settled = false;
+
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      try { sub.close(); } catch { /* ignore */ }
+      resolve(collected);
+    };
+
+    const sub = getPool().subscribeMany(config.relays, filter, {
+      onevent(event) {
+        if (settled || seen.has(event.id)) return;
+        seen.add(event.id);
+        collected.push(event);
+        if (collected.length >= limit) finish();
+      },
+      oneose() {
+        // EOSE from a single relay isn't enough — others may still have events.
+        // But if every relay EOSEd and we have nothing, finish at the timeout.
+      },
+    });
+
+    setTimeout(finish, config.relayTimeoutMs);
+  });
+}
+
 async function querySingle(filter: Filter): Promise<Event | null> {
-  const events = await Promise.race<Event[]>([
-    getPool().querySync(config.relays, filter),
-    new Promise<Event[]>((resolve) => setTimeout(() => resolve([]), config.relayTimeoutMs)),
-  ]);
+  const events = await fastQuery(filter, 1);
   if (events.length === 0) return null;
   return events.reduce((newest, current) =>
     current.created_at > newest.created_at ? current : newest,
@@ -37,10 +75,7 @@ async function querySingle(filter: Filter): Promise<Event | null> {
 }
 
 async function queryMany(filter: Filter, limit: number): Promise<Event[]> {
-  const events = await Promise.race<Event[]>([
-    getPool().querySync(config.relays, { ...filter, limit }),
-    new Promise<Event[]>((resolve) => setTimeout(() => resolve([]), config.relayTimeoutMs)),
-  ]);
+  const events = await fastQuery({ ...filter, limit }, limit);
   return events.sort((a, b) => b.created_at - a.created_at).slice(0, limit);
 }
 
