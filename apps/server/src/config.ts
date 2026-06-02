@@ -21,6 +21,8 @@ export const config = {
   relayTimeoutMs: Number(process.env.RELAY_TIMEOUT_MS ?? 4000),
   avatarMaxBytes: Number(process.env.AVATAR_MAX_BYTES ?? 1_000_000),
   avatarMaxDimension: Number(process.env.AVATAR_MAX_DIM ?? 2048),
+  avatarMaxPixels: Number(process.env.AVATAR_MAX_PIXELS ?? 16_777_216),
+  avatarFetchTimeoutMs: Number(process.env.AVATAR_FETCH_TIMEOUT_MS ?? 3000),
   rateLimitPerMin: Number(process.env.RATE_LIMIT_PER_MIN ?? 60),
   wotScoreUrl: process.env.WOT_SCORE_URL ?? '',
   publicSiteUrl: process.env.PUBLIC_SITE_URL ?? 'https://nostr-wot.com',
