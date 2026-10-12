@@ -43,4 +43,4 @@ Visit `http://localhost:3004/widgets/profile/<npub>.svg` to verify.
 
 ## License
 
-By contributing you agree your code is released under the MIT license.
+By contributing you agree your code is released under the GNU General Public License, version 3 only (GPL-3.0-only).

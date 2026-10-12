@@ -1,7 +1,7 @@
 {
   "name": "@nostr-widgets/renderer",
   "version": "0.1.0",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "description": "Pure-function SVG renderers for Nostr profile, follow, and feed widgets.",
   "type": "module",
   "main": "./dist/index.js",

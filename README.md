@@ -130,4 +130,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Issues and PRs welcome — particularly 
 
 ## License
 
-[MIT](LICENSE)
+[GPL-3.0-only](LICENSE). See [NOTICE.md](NOTICE.md) for preserved notices.

@@ -35,4 +35,4 @@ The renderer never performs I/O. The caller is responsible for fetching profile 
 
 ## License
 
-MIT
+[GPL-3.0-only](../../LICENSE)
