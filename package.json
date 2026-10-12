@@ -2,7 +2,7 @@
   "name": "nostr-widgets",
   "private": true,
   "version": "0.1.0",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "description": "Server-rendered SVG widgets for Nostr profiles, follows, and feeds. Embed anywhere with <a><img></a>.",
   "homepage": "https://nostr-wot.com/widgets",
   "repository": {
